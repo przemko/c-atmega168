@@ -9,9 +9,9 @@ int main(void)
    DDRB |= (1 << PB0);
     for(;;){
         PORTB = 0b00000001;
-        _delay_ms(200);
+        _delay_ms(1000);
         PORTB = 0b00000000;
-        _delay_ms(500);
+        _delay_ms(1000);
     }
     return 0;
 }
