@@ -1,3 +1,6 @@
+// main.c
+// Przyklad z ksiazki Elliot Williams "Make: AVR Programming"
+
 #include <avr/io.h>
 #include <util/delay.h>
 
