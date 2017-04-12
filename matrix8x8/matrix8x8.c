@@ -27,15 +27,15 @@ void matrix8x8_blinkrate(uint8_t addr, uint8_t data)
 	if(data > 3)
 		data = 0;
 	twi_writedata(addr,	HT16K33_BLINK_CMD |
-												HT16K33_BLINK_DISPLAYON |
-												(data << 2));
+						HT16K33_BLINK_DISPLAYON |
+						(data << 2));
 }
 void matrix8x8_setbrightness(uint8_t addr, uint8_t data)
 {
 	if(data > 15)
 		data = 15;
 	twi_writedata(addr,	HT16K33_CMD_BRIGHTNESS |
-												data);
+						data);
 }
 
 void matrix8x8_clear()
