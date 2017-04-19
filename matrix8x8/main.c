@@ -7,12 +7,12 @@
 int main(void)
 {
 	const uint8_t addr = 0x71;
-	matrix8x8_init(addr);
+	//matrix8x8_init(addr);
 
 	// inicjowanie D0
 	DDRB |= 0b00000001;
 	// nadawanie SOS
-	int t = 1200 / 20; // 1200 ms / words per minute 
+	int t = 1200 / 20; // 1200 ms / words per minute
 	for(;;)
 	{
 		for(int i=0; i<3; i++)

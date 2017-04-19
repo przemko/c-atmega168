@@ -1,27 +1,151 @@
 // twi.c
+//
+// Na podstawie I2C package for AVR-Ada by Tero Koskinen.
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
 #include "twi.h"
 
+enum TWI_State_Enum {
+    TWI_Ready,
+    TWI_MRX,
+    TWI_MTX
+};
+
+volatile enum TWI_Error_Enum TWI_Error_State;
+
+#define TW_READ  1
+#define TW_WRITE 0
+
+#define TW_START        0x08
+#define TW_REP_START    0x10
+
+#define TW_MT_SLA_ACK   0x18
+#define TW_MT_SLA_NACK  0x20
+
+#define TW_MT_DATA_ACK  0x28
+#define TW_MT_DATA_NACK 0x30
+
+#define TW_MR_SLA_ACK   0x40
+#define TW_MR_SLA_NACK  0x48
+
+#define TW_MR_DATA_ACK  0x50
+#define TW_MR_DATA_NACK 0x58
+
+#define TW_BUS_ERROR  0x00
+#define TW_NO_INFO    0xF8
+#define TW_ARB_LOST   0x38
+
+uint8_t buffer[33];
+
+int data_index;
+int data_max;
+int data_received;
+bool data_sent;
+
+volatile enum TWI_State_Enum TWI_State;
+volatile uint8_t TWI_SLA_RW;
+
+void stop();
+void reply(bool ack);
+void release();
+
 void twi_init()
 {
+  data_index = 1;
+  data_max = 1;
+  data_sent = false;
+  TWI_State = TWI_Ready;
+
   // init TWI ports C4 and C5
   PORTC |= 0b00110000;
   // init TWI prescaler and bitrate
   TWSR |= 0b00000011;
-  TWBR = 72; // ((CPU_Speed / TWI_FREQ) - 16) / 2 = 72 czy mniej?
+  TWBR = 5; // ((CPU_Speed / TWI_FREQ) - 16) / 2 czy mniej odejmowac 16?
   // enable TWI, acks and interrupt
   TWCR = 0b01000101; // TWEN | TWIE | TWEA
   sei();
 }
 
+void twi_requestdata(uint8_t addr, int amount)
+{
+  data_index = 1;
+  data_max = amount;
+  data_received = 0;
+  TWI_Error_State = TWI_No_Error;
+  TWI_State = TWI_MRX;
+  TWI_SLA_RW = TW_READ | (addr << 1);
+  TWCR = 0b11100101; // TWEN | TWIE | TWEA | TWINT | TWSTA
+
+  while(TWI_State == TWI_MRX);
+
+}
+
+bool twi_dataavailable()
+{
+  return data_index <= data_received;
+}
+
+uint8_t twi_receive()
+{
+  uint8_t ret_val = 0;
+  if(data_index <= data_received)
+  {
+    ret_val = buffer[data_index];
+    data_index++;
+  }
+  return ret_val;
+}
+
 void twi_writedata(uint8_t addr, uint8_t data)
 {
+  data_sent = false;
+  buffer[1] = data;
+  data_index = 1;
+  data_max = data_index;
+
+  TWI_State = TWI_MTX;
+  TWI_Error_State = TWI_No_Error;
+
+  TWI_SLA_RW = TW_WRITE | (addr << 1);
+
+  TWCR = 0b11100101; // TWEN | TWIE | TWEA | TWINT | TWSTA
+
+  while(TWI_State == TWI_MTX);
 
 }
 
 void twi_writebuffer(uint8_t addr, int n, uint8_t buffer[])
 {
 
+}
+
+void stop()
+{
+  TWCR = 0b11010101; // TWEN | TWIE | TWEA | TWINT | TWSTO
+  while(TWCR & 0b00010000);
+}
+
+void replay(bool ack)
+{
+  if(ack)
+    TWCR = 0b11000101;
+  else
+    TWCR = 0b10000101;
+}
+
+void release()
+{
+  TWCR = 0b11000101;
+  TWI_State = TWI_Ready;
+}
+
+void twi_interrupt()
+{
+
+}
+enum TWI_Error_Enum twi_geterror()
+{
+  return TWI_Error_State;
 }
