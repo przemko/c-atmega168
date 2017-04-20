@@ -4,8 +4,9 @@
 #include <util/delay.h>
 #include "matrix8x8.h"
 
-void matrix_test(uint8_t addr)
+void matrix_test()
 {
+	const uint8_t addr = 0x71;
 	matrix8x8_init(addr);
 	matrix8x8_clear();
 	for(int x=0; x<8; x++)
@@ -18,9 +19,7 @@ void matrix_test(uint8_t addr)
 
 int main(void)
 {
-
-	const uint8_t addr = 0x71;
-	matrix_test(addr);
+	matrix_test();
 
 	// nadawanie SOS
 	DDRB |= 0b00000001;

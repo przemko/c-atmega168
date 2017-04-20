@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 #define TWI_FREQ 100000
-#define CPU_SPEED 1000000
+#define CPU_SPEED 8000000
 enum TWI_Error_Enum {
   TWI_No_Error,
   TWI_Bus_Error,

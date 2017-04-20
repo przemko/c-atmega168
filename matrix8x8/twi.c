@@ -62,7 +62,7 @@ void twi_init()
   PORTC |= 0b00110000;
   // init TWI prescaler and bitrate
   TWSR &= ~0b00000011;
-  TWBR = 5; // ((CPU_Speed / TWI_FREQ) - 16) / 2 czy nie odejmowac 16?
+  TWBR = ((CPU_SPEED / TWI_FREQ) - 16) / 2;
   // enable TWI, acks and interrupt
   TWCR = 0b01000101; // TWEN | TWIE | TWEA
   sei();
@@ -198,7 +198,7 @@ ISR(TWI_vect)
       break;
     case TW_MT_SLA_ACK:
     case TW_MT_DATA_ACK:
-      if(data_index <= data_max && !data_sent)
+      if((data_index <= data_max) && !data_sent)
       {
         TWDR = buffer[data_index];
         if(data_index < data_max)
@@ -215,6 +215,8 @@ ISR(TWI_vect)
       TWI_Error_State = TWI_NACK;
       stop();
       break;
+    default:
+      ;
   }
 }
 enum TWI_Error_Enum twi_geterror()
