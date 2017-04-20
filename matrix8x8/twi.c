@@ -125,9 +125,10 @@ void stop()
 {
   TWCR = 0b11010101; // TWEN | TWIE | TWEA | TWINT | TWSTO
   while(TWCR & 0b00010000);
+  TWI_State = TWI_Ready;
 }
 
-void replay(bool ack)
+void reply(bool ack)
 {
   if(ack)
     TWCR = 0b11000101;
@@ -141,9 +142,63 @@ void release()
   TWI_State = TWI_Ready;
 }
 
-void twi_interrupt()
+ISR(TWI_vect)
 {
-
+  const uint8_t TW_Status_Mask = 0b11111000;
+  const uint8_t TW_Status = TWSR & TW_Status_Mask;
+  switch(TW_Status)
+  {
+    case TW_START:
+    case TW_REP_START:
+      TWDR = TWI_SLA_RW;
+      reply(true);
+      break;
+    case TW_ARB_LOST:
+      TWI_Error_State = TWI_Lost_Arbitration;
+      release();
+      break;
+    case TW_MR_SLA_ACK:
+      if(data_received < data_max - 1)
+        reply(true);
+      else
+        reply(false);
+      break;
+    case TW_MR_SLA_NACK:
+      stop();
+      break;
+    case TW_MR_DATA_ACK:
+      buffer[data_received + 1] = TWDR;
+      data_received++;
+      if(data_received < data_max)
+        reply(true);
+      else
+        reply(false);
+      break;
+    case TW_MR_DATA_NACK:
+      buffer[data_received + 1] = TWDR;
+      data_received++;
+      stop();
+      break;
+    case TW_MT_SLA_ACK:
+    case TW_MT_DATA_ACK:
+      if(data_index <= data_max && !data_sent)
+      {
+        TWDR = buffer[data_index];
+        if(data_index < data_max)
+          data_index++;
+        else
+          data_sent = true;
+        reply(true);
+      }
+      else
+        stop();
+      break;
+    case TW_MT_SLA_NACK:
+    case TW_MT_DATA_NACK:
+      TWI_Error_State = TWI_NACK;
+      stop();
+      break;
+  }
 }
 enum TWI_Error_Enum twi_geterror()
 {
