@@ -62,7 +62,7 @@ void twi_init()
   PORTC |= 0b00110000;
   // init TWI prescaler and bitrate
   TWSR |= 0b00000011;
-  TWBR = 5; // ((CPU_Speed / TWI_FREQ) - 16) / 2 czy mniej odejmowac 16?
+  TWBR = 5; // ((CPU_Speed / TWI_FREQ) - 16) / 2 czy nie odejmowac 16?
   // enable TWI, acks and interrupt
   TWCR = 0b01000101; // TWEN | TWIE | TWEA
   sei();
@@ -116,9 +116,26 @@ void twi_writedata(uint8_t addr, uint8_t data)
 
 }
 
-void twi_writebuffer(uint8_t addr, int n, uint8_t buffer[])
+void twi_writebuffer(uint8_t addr, int n, uint8_t data[])
 {
+  int index = 1;
+  data_sent = false;
+  for(int i=0; i<n; i++)
+  {
+    buffer[index] = data[i];
+    index++;
+  }
+  data_index = 1;
+  data_max = index - 1;
 
+  TWI_State = TWI_MTX;
+  TWI_Error_State = TWI_No_Error;
+
+  TWI_SLA_RW = TW_WRITE | (addr << 1);
+
+  TWCR = 0b11100101; // TWEN | TWIE | TWEA | TWINT | TWSTA
+
+  while(TWI_State == TWI_MTX);
 }
 
 void stop()

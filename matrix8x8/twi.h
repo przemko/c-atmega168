@@ -18,5 +18,5 @@ void twi_requestdata(uint8_t addr, int amount);
 bool twi_dataavailable();
 uint8_t twi_receive();
 void twi_writedata(uint8_t addr, uint8_t data);
-void twi_writebuffer(uint8_t addr, int n, uint8_t buffer[]);
+void twi_writebuffer(uint8_t addr, int n, uint8_t data[]);
 enum TWI_Error_Enum twi_geterror();
