@@ -4,14 +4,26 @@
 #include <util/delay.h>
 #include "matrix8x8.h"
 
+void matrix_test(uint8_t addr)
+{
+	matrix8x8_init(addr);
+	matrix8x8_clear();
+	for(int x=0; x<8; x++)
+		for(int y=0; y<8; y++)
+		{
+			matrix8x8_drawpixel(x, y, 1);
+			matrix8x8_writedisplay(addr);
+		}
+}
+
 int main(void)
 {
-	const uint8_t addr = 0x71;
-	matrix8x8_init(addr);
 
-	// inicjowanie D0
-	DDRB |= 0b00000001;
+	const uint8_t addr = 0x71;
+	matrix_test(addr);
+
 	// nadawanie SOS
+	DDRB |= 0b00000001;
 	int t = 1200 / 20; // 1200 ms / words per minute
 	for(;;)
 	{

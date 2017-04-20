@@ -61,7 +61,7 @@ void twi_init()
   // init TWI ports C4 and C5
   PORTC |= 0b00110000;
   // init TWI prescaler and bitrate
-  TWSR |= 0b00000011;
+  TWSR &= ~0b00000011;
   TWBR = 5; // ((CPU_Speed / TWI_FREQ) - 16) / 2 czy nie odejmowac 16?
   // enable TWI, acks and interrupt
   TWCR = 0b01000101; // TWEN | TWIE | TWEA
