@@ -22,9 +22,10 @@ void matrix_test()
 	// 	twi_writedata(addr, 0);
 	// 	twi_writedata(addr, rand() % 256);
 	// }
-	matrix8x8_setbrightness(addr, 1);
+	matrix8x8_setbrightness(addr, 8);
 	_delay_ms(5000);
 	matrix8x8_blinkrate(addr, 3);
+	matrix8x8_setbrightness(addr, 1);
 	_delay_ms(5000);
 	matrix8x8_setbrightness(addr, 15);
 	_delay_ms(5000);
