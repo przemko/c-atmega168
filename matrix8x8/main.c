@@ -17,11 +17,6 @@ void matrix_test()
 	const uint8_t addr = 0x71;
 	matrix8x8_init(addr);
 
-	// for(int i=0; i<10000; i++)
-	// {
-	// 	twi_writedata(addr, 0);
-	// 	twi_writedata(addr, rand() % 256);
-	// }
 	matrix8x8_setbrightness(addr, 8);
 	_delay_ms(5000);
 	matrix8x8_blinkrate(addr, 3);
