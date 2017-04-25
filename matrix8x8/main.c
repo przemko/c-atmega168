@@ -4,23 +4,38 @@
 #include <util/delay.h>
 #include "matrix8x8.h"
 
+#include <stdio.h> // na potrzeby testowania
+#include "twi.h" // na potrzeby testowania
+
+uint8_t buffer[] = {
+	0,
+	255, 255, 255, 255, 255, 255, 255, 255,
+	255, 255, 255, 255, 255, 255, 255, 255};
+
 void matrix_test()
 {
 	const uint8_t addr = 0x71;
 	matrix8x8_init(addr);
-	matrix8x8_clear();
-	for(int x=0; x<8; x++)
-		for(int y=0; y<8; y++)
-		{
-			matrix8x8_drawpixel(x, y, 1);
-			matrix8x8_writedisplay(addr);
-		}
+
+	// for(int i=0; i<10000; i++)
+	// {
+	// 	twi_writedata(addr, 0);
+	// 	twi_writedata(addr, rand() % 256);
+	// }
+	matrix8x8_setbrightness(addr, 1);
+	_delay_ms(2000);
+	matrix8x8_blinkrate(addr, 3);
+	_delay_ms(10000);
+	matrix8x8_setbrightness(addr, 15);
+	_delay_ms(2000);
+	matrix8x8_blinkrate(addr, 0);
+
+	//twi_writebuffer(addr, 17, buffer);
+
 }
 
-int main(void)
+void led_test()
 {
-	matrix_test();
-
 	// nadawanie SOS
 	DDRB |= 0b00000001;
 	int t = 1200 / 20; // 1200 ms / words per minute
@@ -47,6 +62,16 @@ int main(void)
 		}
 		_delay_ms(6*t);
 	}
+}
 
-    return 0;
+int main(void)
+{
+	matrix_test();
+	led_test();
+	for(;;)
+	{
+
+	}
+
+  return 0;
 }
