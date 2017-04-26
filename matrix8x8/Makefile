@@ -17,7 +17,7 @@ flash:	all
 	$(AVRDUDE) -U flash:w:main.hex:i
 
 clean:
-	rm -f main.hex main.elf $(OBJECTS)
+	rm -f main.hex main.elf $(OBJECTS) *~
 
 main.elf: $(OBJECTS)
 	$(COMPILE) -o main.elf $(OBJECTS)

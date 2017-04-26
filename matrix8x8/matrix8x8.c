@@ -46,7 +46,7 @@ void matrix8x8_clear()
 
 void matrix8x8_writedisplay(uint8_t addr)
 {
-	buffer[0] = 0;//0x00;
+	buffer[0] = 0x00;
 	for(int i=0; i<8; i++)
 	{
 		buffer[2 * i + 1] = (uint8_t) (display_buffer[i] & 0x00FF);

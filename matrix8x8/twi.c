@@ -37,12 +37,12 @@ volatile enum TWI_Error_Enum TWI_Error_State;
 #define TW_NO_INFO    0xF8
 #define TW_ARB_LOST   0x38
 
-uint8_t buffer[33];
+static uint8_t buffer[33]; // bez static nie działa!
 
-volatile int data_index;
-volatile int data_max;
-volatile int data_received;
-volatile bool data_sent;
+static volatile int data_index;
+static volatile int data_max;
+static volatile int data_received;
+static volatile bool data_sent;
 
 volatile enum TWI_State_Enum TWI_State;
 volatile uint8_t TWI_SLA_RW;
