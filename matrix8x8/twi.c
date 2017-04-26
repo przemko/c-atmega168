@@ -39,10 +39,10 @@ volatile enum TWI_Error_Enum TWI_Error_State;
 
 uint8_t buffer[33];
 
-int data_index;
-int data_max;
-int data_received;
-bool data_sent;
+volatile int data_index;
+volatile int data_max;
+volatile int data_received;
+volatile bool data_sent;
 
 volatile enum TWI_State_Enum TWI_State;
 volatile uint8_t TWI_SLA_RW;
