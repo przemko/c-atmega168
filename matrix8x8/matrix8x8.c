@@ -66,3 +66,30 @@ void matrix8x8_drawpixel(int x, int y, int color)
 	else
 		display_buffer[y] &= ~(1 << x);
 }
+
+void matrix8x8_scrolldown()
+{
+        for(int i=7; i>0; i--)
+                display_buffer[i] = display_buffer[i-1];
+        display_buffer[0] = 0x00;
+}
+
+void matrix8x8_scrollup()
+{
+        for(int i=0; i<7; i++)
+                display_buffer[i] = display_buffer[i+1];
+        display_buffer[7] = 0x00;
+}
+
+void matrix8x8_row(int i, uint8_t data)
+{
+	display_buffer[i] =
+					 ((data&1) << 6)
+					|((data&2)   << 4)
+					|((data&4)   << 2)
+					|((data&8)       )
+					|((data&16 ) >> 2)
+					|((data&32)  >> 4)
+					|((data&64)  >> 6)
+					|((data&128)     );
+}
