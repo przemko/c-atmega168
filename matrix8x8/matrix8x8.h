@@ -9,3 +9,4 @@ void matrix8x8_drawpixel(int x, int y, int color);
 void matrix8x8_scrolldown();
 void matrix8x8_scrollup();
 void matrix8x8_row(int i, uint8_t data);
+void matrix8x8_column(int i, uint8_t data);

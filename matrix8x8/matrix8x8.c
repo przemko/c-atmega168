@@ -93,3 +93,15 @@ void matrix8x8_row(int i, uint8_t data)
 					|((data&64)  >> 6)
 					|((data&128)     );
 }
+
+void matrix8x8_column(int i, uint8_t data)
+{
+	if(i < 0 || i > 7)
+		return;
+	int x = (i+7) % 8;
+	for(int i=0; i<8; i++)
+	{
+		display_buffer[i] |= ((data&1) << x);
+		data /= 2;
+	}
+}
