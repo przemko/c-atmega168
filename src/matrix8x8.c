@@ -1,8 +1,8 @@
 // matrix8x8.c
 
 #include <avr/io.h>
-#include "twi.h"
-#include "matrix8x8.h"
+#include <twi.h>
+#include <matrix8x8.h>
 
 #define HT16K33_CMD_BRIGHTNESS  0xE0
 #define HT16K33_BLINK_OFF       0x00

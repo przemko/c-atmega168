@@ -4,8 +4,7 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-
-#include "twi.h"
+#include <twi.h>
 
 enum TWI_State_Enum {
     TWI_Ready,
