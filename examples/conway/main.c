@@ -7,12 +7,8 @@
 #include <stdlib.h>
 
 // Conway Life:
-
 #define DEAD(s) (s < 2 || s > 3)
 #define BORN(s) (s == 3)
-
-//#define DEAD(s) (s > 5)
-//#define BORN(s) (s > 0)
 
 int main()
 {
@@ -38,7 +34,7 @@ int main()
 
       for(uint8_t x=0; x<8; x++)
 	for(uint8_t y=0; y<8; y++)
-	  if((rand()&1) + (rand()&1) == 0)
+	  if((rand()&1) + (rand()&1) == 0) // ppb = 1/4
 	    {
 	      cell[x][y]=1;
 	      matrix8x8_drawpixel(x, y, 1);
@@ -48,7 +44,7 @@ int main()
 		    sum[x+i][y+j]++;
 	    }
       matrix8x8_writedisplay(addr);
-      
+
       for(;;)
 	{
 	  
@@ -99,6 +95,8 @@ int main()
 	  _delay_ms(100);
 	  if(fixpoint)
 	    break;
+	  if(!(rand()&255))
+	    break; // bardzo male ppb
 	}
     }
   return 0;
