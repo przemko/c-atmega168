@@ -1,6 +1,6 @@
 DEVICE     = m168
 CLOCK      = 8000000
-OBJECTS    = twi.o matrix8x8.o
+OBJECTS    = twi.o matrix8x8.o segment7.o
 
 COMPILE = avr-gcc -std=c99 -Wall -Os -DF_CPU=$(CLOCK) -mmcu=atmega168 -I../include
 
