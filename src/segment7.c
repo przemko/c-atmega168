@@ -74,3 +74,18 @@ void segment7_writedigitnum(uint8_t d, uint8_t num, bool dot)
     return;
   segment7_writedigitraw(d, digits[num] | (dot << 7));
 }
+
+void segment7_drawcolon(bool state)
+{
+  if(state)
+    display_buffer[2] = 0x2;
+  else
+    display_buffer[2] = 0;
+}
+
+void segment7_writecolon(uint8_t addr)
+{
+  uint8_t buf[3] = {0x04, display_buffer[2] & 0xFF, display_buffer[2] >> 8};
+
+  twi_writebuffer(addr, 3, buf);
+}

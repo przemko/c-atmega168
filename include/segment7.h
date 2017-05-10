@@ -9,3 +9,5 @@ void segment7_clear();
 void segment7_writedisplay(uint8_t addr);
 void segment7_writedigitraw(uint8_t d, uint8_t bitmask);
 void segment7_writedigitnum(uint8_t d, uint8_t num, bool dot);
+void segment7_drawcolon(bool state);
+void segment7_writecolon(uint8_t addr);
