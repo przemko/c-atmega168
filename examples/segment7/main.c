@@ -19,20 +19,19 @@ int main()
   for(;;)
     {
       segment7_writedigitnum(0, val[0], false);
-      segment7_writedigitnum(1, val[1], true);
-      segment7_writedigitnum(3, val[2], false);
+      segment7_writedigitnum(1, val[1], false);
+      segment7_writedigitnum(3, val[2], true);
       segment7_writedigitnum(4, val[3], false);
       segment7_writedisplay(addr);
       int i=3;
       while(i >= 0 && val[i] == 9)
-	{
-	  val[i] = 0;
-	  i--;
-	}
+	    {
+        val[i] = 0;
+	      i--;
+	    }
       if(i >= 0)
-	val[i]++;
-      _delay_ms(10);
+	      val[i]++;
+      _delay_ms(100);
     }
   return 0;
 }
-
