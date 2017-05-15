@@ -26,8 +26,9 @@ int main(void)
       matrix8x8_row(0, lfsr);
       matrix8x8_writedisplay(addr);
       PORTB |= bit0;
-      _delay_ms(100);
+      _delay_ms(80);
       PORTB &= 0b11111110;
+      _delay_ms(20);
     }
   return 0;
 }
