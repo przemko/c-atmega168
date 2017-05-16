@@ -21,21 +21,45 @@ int main()
   };
 
   struct point snake[MAXN];
-  int n = 1;
-  int first = 0;
-  int last = 0;
-  snake[first].x = 4;
-  snake[first].y = 4;
-  int dir = 0;
-
-  // wyswietl weza
-  matrix8x8_drawpixel(snake[first].x, snake[first].y, 1);
-  matrix8x8_writedisplay(addr);
 
   for(;;)
     {
-      
+      // nowy waz
+    new_snake: ;
+      int n = 1;
+      int head = 0;
+      int tail = 0;
+      snake[head].x = 4;
+      snake[head].y = 4;
+      int dir = 0;
+      matrix8x8_clear();
+      matrix8x8_drawpixel(snake[head].x, snake[head].y, 1);
+      matrix8x8_writedisplay(addr);
 
+      for(;;)
+	{
+	  
+	  // czy sie wydluza?
+	  if(n < MAXN && rand()%5 == 0)
+	    {
+	      int x1 = snake[head].x + (dir==1) - (dir==3);
+	      int y1 = snake[head].y + (dir==2) - (dir==0);
+	      if(x1 >= 0 && x1 < 8 && y1 >= 0 && y1 < 8)
+		{
+		  head++;
+		  if(head == MAXN)
+		    head = 0;
+		  snake[head].x = x1;
+		  snake[head].y = y1;
+		  matrix8x8_drawpixel(x1, y1, 1);
+		  matrix8x8_writedisplay(addr);
+		}
+	    }
+
+	  
+	  _delay_ms(1000);
+	}
+      
     }
 
   return 0;
