@@ -1,7 +1,7 @@
 # c-atmega168
 Przykłady programów w języku C na mikrokontroler ATmega168.
 
-``bash
+```bash
 cd c-atmega128
 cd src
 make 
