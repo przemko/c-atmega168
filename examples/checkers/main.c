@@ -12,9 +12,6 @@ const uint8_t addr = 0x71;
 
 char board[8][8];
 
-uint8_t wh_0, wh_1, wh_2, wh_3, wh_4, wh_5, wh_6, wh_7;
-uint8_t bl_0, bl_1, bl_2, bl_3, bl_4, bl_5, bl_6, bl_7;
-
 void init_board(void) {
   for(int i = 0; i < 8; i++)
     for(int j = 0; j < 8; j++)
@@ -73,13 +70,6 @@ int main(void) {
 
   
   while(1) {
-    _delay_ms(25);
-    bl_3 = bl_2 >> 1;
-    bl_2 = 0b00000000;
-    _delay_ms(25);
-    bl_2 = bl_3 << 1;
-    bl_3 = 0b00000000;
-
   }
   return 0;
 }
