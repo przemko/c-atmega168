@@ -24,7 +24,7 @@ int main()
 	  PORTB |= 0b00000001; _delay_ms(3*t);
 	  PORTB &= 0b11111110; _delay_ms(t);
 	}
-      _delay_ms(t);
+      _delay_ms(2*t);
       
       for(int i=0; i<3; i++)
 	{
